@@ -40,6 +40,37 @@ func automationTarget(t *testing.T, s automation.Snapshot, name string) automati
 	return target
 }
 
+func TestAutomationSelectedStates(t *testing.T) {
+	for _, test := range []struct {
+		name     string
+		role     Role
+		selected bool
+	}{
+		{"list item", RoleListItem, true},
+		{"table row", RoleRow, true},
+		{"tab", RoleTab, true},
+		{"tree item", RoleTreeItem, true},
+		{"checkbox", RoleCheckBox, false},
+		{"radio", RoleRadio, false},
+		{"toggle button", RoleToggleButton, false},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			for _, checked := range []bool{false, true} {
+				tt := NewTester(func(c *Context) {
+					Box(c).Label("Choice").Role(test.role).Checked(checked)
+				}, 300, 200)
+				s := tt.Inspect()
+				target := automationTarget(t, s, "Choice")
+				for _, n := range s.Nodes {
+					if n.ID == target.ID && (n.Checked != checked || n.Selected != (checked && test.selected)) {
+						t.Fatalf("checked=%v: %+v", checked, n)
+					}
+				}
+			}
+		})
+	}
+}
+
 func TestAutomationSnapshotAndActions(t *testing.T) {
 	on, value := false, "Ada"
 	tt := NewTester(func(c *Context) {

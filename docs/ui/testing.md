@@ -53,8 +53,11 @@ sequence. Run it with `go test ./ui -run ExampleTester_Inspect` from the
 repository root.
 
 Nodes have an ID, parent index (`-1` at the top), role, accessible name,
-available leaf text, value, bounds, states and supported actions. An explicit
-`Label` changes `Name`; available leaf `Text` remains separately searchable.
+available leaf text, value, bounds, states and supported actions. Chosen list
+items, table rows, tabs and tree items have `Selected: true`; `Checked` also
+retains their accessibility checked state. Checked checkboxes and radios do
+not imply `Selected`. An explicit `Label` changes `Name`; available leaf
+`Text` remains separately searchable.
 `Resolve(id, "")` selects by ID. Duplicate name/text matches return
 `automation.ErrAmbiguous`; inspect the nodes and select the desired ID.
 Missing targets return `ErrMissing`. JSON encodes IDs, sessions, generations

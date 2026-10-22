@@ -44,6 +44,8 @@ type Bounds struct{ X, Y, W, H float64 }
 // is its leaf content, where available, even when an explicit Label replaces
 // the name. Password values and selections are omitted. Offscreen describes
 // built content outside a scroll viewport, not arbitrary window occlusion.
+// Selected describes chosen list items, table rows, tabs and tree items;
+// Checked also retains the accessibility tree's checked state for these roles.
 type Node struct {
 	ID                                                uint64 `json:",string"`
 	Generation                                        uint64 `json:",string"`

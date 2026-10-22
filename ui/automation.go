@@ -85,6 +85,10 @@ func (rt *engine) inspect() automation.Snapshot {
 			Level: n.Level, PosInSet: n.PosInSet, SetSize: n.SetSize,
 		}
 		out := &s.Nodes[i]
+		switch n.Role {
+		case platform.RoleListItem, platform.RoleRow, platform.RoleTab, platform.RoleTreeItem:
+			out.Selected = out.Selected || out.Checked
+		}
 		if st := rt.states[n.ID]; st != nil {
 			out.Generation = st.born
 		}
